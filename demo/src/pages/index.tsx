@@ -20,6 +20,9 @@ export default function Home() {
     coverImageValue,
     publication,
     handleCollect,
+    collected,
+    filledBars,
+    setFilledBars,
   } = useLens();
   console.log({ publication });
   const { openConnectModal } = useConnectModal();
@@ -48,8 +51,16 @@ export default function Home() {
               setPostDescription={setPostDescription}
               publication={publication}
               handleCollect={handleCollect}
+              collected={collected}
+              filledBars={filledBars}
+              setFilledBars={setFilledBars}
             />
-            <Bonus claimBonus={claimBonus} />
+            <Bonus
+              claimBonus={claimBonus}
+              collected={collected}
+              filledBars={filledBars}
+              setFilledBars={setFilledBars}
+            />
           </div>
         </div>
       </div>

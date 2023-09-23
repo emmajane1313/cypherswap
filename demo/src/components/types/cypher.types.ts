@@ -51,6 +51,9 @@ export type GrantProps = {
 
 export type BonusProps = {
   claimBonus: () => Promise<void>;
+  collected: boolean;
+  filledBars: number;
+  setFilledBars: (e: number) => void;
 };
 
 export type MilestoneProps = {
@@ -81,4 +84,7 @@ export type MilestoneProps = {
     claimFrom: number[];
   }) => void;
   publication: any;
+  collected: boolean;
+  filledBars: number;
+  setFilledBars: (e: number) => void;
 };

@@ -47,11 +47,13 @@ const useLens = () => {
   });
   const { address } = useAccount();
   const [profile, setProfile] = useState<any>();
+  const [filledBars, setFilledBars] = useState<number>(0);
   const [publication, setPublication] = useState<any>();
   const [bonusPoolAmount, setBonusPoolAmount] = useState<number>(0);
   const [currentMilestone, setCurrentMilestone] = useState<number>(1);
   const [postLoading, setPostLoading] = useState<boolean>(false);
   const [pubId, setPubId] = useState<number>();
+  const [collected, setCollected] = useState<boolean>(false);
   const [authSig, setAuthSig] = useState<LitAuthSig>();
   const [postDescription, setPostDescription] = useState<{
     title: string;
@@ -330,131 +332,115 @@ const useLens = () => {
   };
 
   const readLensDataUpdate = async () => {
-    try {
-      if (typeof window !== "undefined" && "ethereum" in window) {
-        await litClient.connect();
-
-        const web3Provider = new ethers.providers.Web3Provider(
-          (window as any)?.ethereum!
-        );
-        const connectedSigner = web3Provider.getSigner();
-
-        const authSig = await generateAuthSig(
-          connectedSigner as ethers.Signer,
-          LitChainIds["mumbai"]
-        );
-
-        console.log({ authSig });
-
-        const chronicleProvider = new ethers.providers.JsonRpcProvider(
-          "https://chain-rpc.litprotocol.com/http",
-          175177
-        );
-        console.log("after", process.env.NEXT_PUBLIC_PRIVATE_KEY);
-        const chronicleSigner = new ethers.Wallet(
-          process.env.NEXT_PUBLIC_PRIVATE_KEY!,
-          chronicleProvider
-        );
-
-        console.log({ chronicleSigner, profileId });
-
-        const pubIdValue = await publicClient.readContract({
-          address: LENS_HUB_ADRESS,
-          abi: LensHubAbi,
-          functionName: "getPubCount",
-          args: [parseInt(profileId, 16)],
-        });
-        const pubId = Number(pubIdValue) + 1;
-
-        console.log({ pubId, profileId });
-
-        const newCircuit = new Circuit(chronicleSigner);
-
-        newCircuit.setConditions([
-          new ContractCondition(
-            LENS_HUB_ADRESS,
-            LensHubAbi,
-            CHAIN_NAME.MUMBAI,
-            `https://polygon-mumbai.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_ALCHEMY_MUMBAI_KEY}`,
-            "PostCreated",
-            ["profileId", "pubId"],
-            [parseInt(profileId, 16), pubId],
-            "==",
-            async () => console.log("matched"),
-            async () => console.log("unmatched"),
-            async (error) => console.log("error", error.message)
-          ),
-        ]);
-
-        const { unsignedTransactionDataObject, litActionCode } =
-          await newCircuit.setActions([
-            {
-              type: "contract",
-              priority: 0,
-              contractAddress: DATACORE_ADRESS,
-              abi: DatacoreAbi,
-              functionName: "initializeGrantRecipient",
-              chainId: CHAIN_NAME.MUMBAI,
-              nonce: 1,
-              gasLimit: 100000,
-              value: 0,
-              providerURL: `https://polygon-mumbai.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_ALCHEMY_MUMBAI_KEY}`,
-              maxPriorityFeePerGas: 1000,
-              maxFeePerGas: 10000,
-              args: [
-                {
-                  _granteeAddresses: [address],
-                  _milestoneId: [1, 2, 3],
-                  _claimBy: postDescription.claimBy,
-                  _claimFrom: postDescription.claimFrom,
-                  _amount: [5000, 5000, 5000],
-                  _splitAmounts: [100],
-                  _pubId: pubId,
-                },
-              ],
-            },
-          ]);
-        newCircuit.setConditionalLogic({
-          type: "EVERY",
-          interval: 20000,
-        });
-        newCircuit.executionConstraints({
-          startDate: new Date(),
-        });
-
-        const response = await fetch("api/ipfs", {
-          method: "POST",
-          body: litActionCode,
-        });
-
-        console.log({ response });
-
-        const ipfsCID = (await response.json()).cid;
-
-        const {
-          publicKey,
-          tokenId,
-          address: ethAddress,
-        } = await newCircuit.mintGrantBurnPKP(ipfsCID);
-
-        console.log({ publicKey });
-
-        newCircuit.start({
-          publicKey: publicKey,
-          ipfsCID,
-          authSig,
-          broadcast: true,
-        });
-
-        console.log("started");
-      }
-    } catch (err: any) {
-      console.error(err.message);
-    }
+    // try {
+    //   if (typeof window !== "undefined" && "ethereum" in window) {
+    //     await litClient.connect();
+    //     const web3Provider = new ethers.providers.Web3Provider(
+    //       (window as any)?.ethereum!
+    //     );
+    //     const connectedSigner = web3Provider.getSigner();
+    //     const authSig = await generateAuthSig(
+    //       connectedSigner as ethers.Signer,
+    //       LitChainIds["mumbai"]
+    //     );
+    //     console.log({ authSig });
+    //     const chronicleProvider = new ethers.providers.JsonRpcProvider(
+    //       "https://chain-rpc.litprotocol.com/http",
+    //       175177
+    //     );
+    //     console.log("after", process.env.NEXT_PUBLIC_PRIVATE_KEY);
+    //     const chronicleSigner = new ethers.Wallet(
+    //       process.env.NEXT_PUBLIC_PRIVATE_KEY!,
+    //       chronicleProvider
+    //     );
+    //     console.log({ chronicleSigner, profileId });
+    //     const pubIdValue = await publicClient.readContract({
+    //       address: LENS_HUB_ADRESS,
+    //       abi: LensHubAbi,
+    //       functionName: "getPubCount",
+    //       args: [parseInt(profileId, 16)],
+    //     });
+    //     const pubId = Number(pubIdValue) + 1;
+    //     console.log({ pubId, profileId });
+    //     const newCircuit = new Circuit(chronicleSigner);
+    //     newCircuit.setConditions([
+    //       new ContractCondition(
+    //         LENS_HUB_ADRESS,
+    //         LensHubAbi,
+    //         CHAIN_NAME.MUMBAI,
+    //         `https://polygon-mumbai.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_ALCHEMY_MUMBAI_KEY}`,
+    //         "PostCreated",
+    //         ["profileId", "pubId"],
+    //         [parseInt(profileId, 16), pubId],
+    //         "==",
+    //         async () => console.log("matched"),
+    //         async () => console.log("unmatched"),
+    //         async (error) => console.log("error", error.message)
+    //       ),
+    //     ]);
+    //     const { unsignedTransactionDataObject, litActionCode } =
+    //       await newCircuit.setActions([
+    //         {
+    //           type: "contract",
+    //           priority: 0,
+    //           contractAddress: DATACORE_ADRESS,
+    //           abi: DatacoreAbi,
+    //           functionName: "initializeGrantRecipient",
+    //           chainId: CHAIN_NAME.MUMBAI,
+    //           nonce: 1,
+    //           gasLimit: 100000,
+    //           value: 0,
+    //           providerURL: `https://polygon-mumbai.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_ALCHEMY_MUMBAI_KEY}`,
+    //           maxPriorityFeePerGas: 1000,
+    //           maxFeePerGas: 10000,
+    //           args: [
+    //             {
+    //               _granteeAddresses: [address],
+    //               _milestoneId: [1, 2, 3],
+    //               _claimBy: postDescription.claimBy,
+    //               _claimFrom: postDescription.claimFrom,
+    //               _amount: [5000, 5000, 5000],
+    //               _splitAmounts: [100],
+    //               _pubId: pubId,
+    //             },
+    //           ],
+    //         },
+    //       ]);
+    //     newCircuit.setConditionalLogic({
+    //       type: "EVERY",
+    //       interval: 20000,
+    //     });
+    //     newCircuit.executionConstraints({
+    //       startDate: new Date(),
+    //     });
+    //     const response = await fetch("api/ipfs", {
+    //       method: "POST",
+    //       body: litActionCode,
+    //     });
+    //     console.log({ response });
+    //     const ipfsCID = (await response.json()).cid;
+    //     const {
+    //       publicKey,
+    //       tokenId,
+    //       address: ethAddress,
+    //     } = await newCircuit.mintGrantBurnPKP(ipfsCID);
+    //     console.log({ publicKey });
+    //     newCircuit.start({
+    //       publicKey: publicKey,
+    //       ipfsCID,
+    //       authSig,
+    //       broadcast: true,
+    //     });
+    //     console.log("started");
+    //   }
+    // } catch (err: any) {
+    //   console.error(err.message);
+    // }
   };
 
   const likeandMirrorPostScript = async () => {
     try {
+      
     } catch (err: any) {
       console.error(err.message);
     }
@@ -483,9 +469,7 @@ const useLens = () => {
       const typedData: any = collectPost.data.createCollectTypedData.typedData;
       const clientWallet = createWalletClient({
         chain: polygonMumbai,
-        transport: http(
-          `https://polygon-mumbai.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_ALCHEMY_MUMBAI_KEY}`
-        ),
+        transport: custom((window as any).ethereum),
       });
 
       const signature: any = await clientWallet.signTypedData({
@@ -522,6 +506,7 @@ const useLens = () => {
       const res = await clientWallet.writeContract(request);
 
       await publicClient.waitForTransactionReceipt({ hash: res });
+      setCollected(true);
     } catch (err: any) {
       console.error(err.message);
     }
@@ -546,6 +531,9 @@ const useLens = () => {
     bonusPoolAmount,
     publication,
     handleCollect,
+    collected,
+    filledBars,
+    setFilledBars,
   };
 };
 

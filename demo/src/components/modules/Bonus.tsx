@@ -1,7 +1,24 @@
-import { FunctionComponent } from "react";
+import { FunctionComponent, useEffect } from "react";
 import { BonusProps } from "../types/cypher.types";
 
-const Bonus: FunctionComponent<BonusProps> = (): JSX.Element => {
+const Bonus: FunctionComponent<BonusProps> = ({
+  filledBars,
+  collected,
+  setFilledBars,
+  claimBonus,
+}): JSX.Element => {
+  useEffect(() => {
+    setTimeout(() => {
+      if (collected && filledBars < 20) {
+        const timer = setTimeout(() => {
+          setFilledBars(((prev: number) => {
+            prev + 1;
+          }) as any);
+        }, 100);
+        return () => clearTimeout(timer);
+      }
+    }, 4000);
+  }, [collected, filledBars]);
   return (
     <div className="relative w-fit h-full flex flex-col items-center justify-center">
       <div className="relative w-full h-full flex flex-col items-center justify-center gap-px">
@@ -10,9 +27,7 @@ const Bonus: FunctionComponent<BonusProps> = (): JSX.Element => {
             <div
               key={index}
               className="relative w-36 h-7 rounded-lg border-naranje border-2 "
-              style={{
-                backgroundColor: `rgb(248,255,72,${(index + 1) / 20})`,
-              }}
+              id={`bar ${index < filledBars ? "bar-filled" : ""}`}
             ></div>
           );
         })}

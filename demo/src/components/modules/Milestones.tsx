@@ -1,4 +1,4 @@
-import { FunctionComponent } from "react";
+import { FunctionComponent, useEffect } from "react";
 import { MilestoneProps } from "../types/cypher.types";
 import { AiOutlineLoading } from "react-icons/ai";
 
@@ -9,8 +9,21 @@ const Milestone: FunctionComponent<MilestoneProps> = ({
   postLoading,
   handlePost,
   publication,
-  handleCollect
+  handleCollect,
+  collected,
+  filledBars,
+  setFilledBars,
 }): JSX.Element => {
+  useEffect(() => {
+    if (collected && filledBars < 20) {
+      const timer = setTimeout(() => {
+        setFilledBars(((prev: number) => {
+          prev + 1;
+        }) as any);
+      }, 100);
+      return () => clearTimeout(timer);
+    }
+  }, [collected, filledBars]);
   return (
     <div className="relative flex flex-row items-center justify-center gap-10 w-fit h-full">
       <div className="relative w-72 h-full flex flex-col items-center justify-center gap-4 font-on text-white">
@@ -153,9 +166,12 @@ const Milestone: FunctionComponent<MilestoneProps> = ({
             <div
               key={index}
               className="relative w-full h-8 rounded-lg border-mosgu border-2 "
-              style={{
-                backgroundColor: `rgb(109,212,0,${(index + 1) / 20})`,
-              }}
+              //   style={{
+              //     backgroundColor: `rgb(109,212,0,${
+              //       !collected ? 0 : (index + 1) / 20
+              //     })`,
+              //   }}
+              id={`bar ${index < filledBars ? "bar-filled" : ""}`}
             ></div>
           );
         })}
