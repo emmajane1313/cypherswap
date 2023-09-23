@@ -7,5 +7,16 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
+  },
+  "dependencies": {
+    "ethers": "^6.7.1",
+    "lit-listener-sdk": "^1.0.22",
+    "uuid": "^9.0.1",
+    "viem": "^1.12.1",
+    "wagmi": "^1.4.2",
+    "next-connect": "^0.13.0"
+  },
+  "devDependencies": {
+    "@types/uuid": "^9.0.4"
   }
 }
