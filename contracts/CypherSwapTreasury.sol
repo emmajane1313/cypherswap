@@ -4,9 +4,9 @@ import "./CypherSwapAccessControl.sol";
 import "./CypherSwapClaimReceipt.sol";
 import "./CypherSwapDatacore.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import {IPoolManager} from "./../../contracts/interfaces/IPoolManager.sol";
-import "./../../contracts/libraries/TickMath.sol";
-import "./../types/PoolKey.sol";
+import {IPoolManager} from "./../contracts/interfaces/IPoolManager.sol";
+import "./../contracts/libraries/TickMath.sol";
+import "./types/PoolKey.sol";
 
 contract CypherSwapTreasury {
     string public symbol;

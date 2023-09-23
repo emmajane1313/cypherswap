@@ -1,5 +1,6 @@
 import { HardhatUserConfig } from "hardhat/config";
-import "@nomicfoundation/hardhat-toolbox";
+import "@nomiclabs/hardhat-ethers";
+require("dotenv").config({ path: ".env" });
 
 const config: HardhatUserConfig = {
   solidity: {
@@ -32,8 +33,12 @@ const config: HardhatUserConfig = {
         interval: 5000,
       },
     },
-    localhost: {
-      url: "http://127.0.0.1:8545",
+    mumbai: {
+      url: `https://polygon-mumbai.g.alchemy.com/v2/${process.env.ALCHEMY_MUMBAI_KEY}`,
+      accounts: [process.env.PRIVATE_KEY!],
+    },
+    local: {
+      url: "http://localhost:8545"
     },
   },
   mocha: {

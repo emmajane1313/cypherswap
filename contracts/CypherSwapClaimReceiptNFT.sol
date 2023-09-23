@@ -5,7 +5,7 @@ import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "./CypherSwapDatacore.sol";
 import "./CypherSwapAccessControl.sol";
 import "./CypherSwapHook.sol";
-import {BalanceDelta} from "./../../contracts/types/BalanceDelta.sol";
+import {BalanceDelta} from "./../contracts/types/BalanceDelta.sol";
 
 contract CypherSwapClaimReceiptNFT is ERC721 {
     CypherSwapDatacore private _cypherSwapDatacore;

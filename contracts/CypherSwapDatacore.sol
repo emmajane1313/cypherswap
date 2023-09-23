@@ -2,7 +2,7 @@
 pragma solidity ^0.8.19;
 
 import {LensHub, DataTypes} from "@aave/lens-protocol/contracts/core/LensHub.sol";
-import {IPoolManager,Currency} from "./../../contracts/interfaces/IPoolManager.sol";
+import {IPoolManager, Currency} from "./../contracts/interfaces/IPoolManager.sol";
 import "./CypherSwapAccessControl.sol";
 import "./CypherSwapClaimReceipt.sol";
 import "./CypherSwapTreasury.sol";

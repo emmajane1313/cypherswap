@@ -9,14 +9,28 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@rainbow-me/rainbowkit": "^1.0.11",
     "ethers": "^6.7.1",
     "lit-listener-sdk": "^1.0.22",
+    "lodash": "^4.17.21",
+    "next-connect": "^0.13.0",
+    "postcss-flexbugs-fixes": "^5.0.2",
+    "postcss-preset-env": "^9.1.4",
+    "postcss": "8.4.24",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
     "uuid": "^9.0.1",
-    "viem": "^1.12.1",
-    "wagmi": "^1.4.2",
-    "next-connect": "^0.13.0"
+    "viem": "^1.4.1",
+    "wagmi": "^1.3.2",
+    "next": "13.4.7",
+    "gql": "^1.1.2",
+    "graphql": "^16.6.0",
+    "@apollo/client": "^3.8.4",
+    "@types/react": "18.2.14",
+    "@types/react-dom": "18.2.6"
   },
   "devDependencies": {
+    "@types/lodash": "^4.14.199",
     "@types/uuid": "^9.0.4"
   }
 }

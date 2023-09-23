@@ -1,12 +1,12 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity >=0.8.19;
 
-import {IPoolManager} from "./../../contracts/interfaces/IPoolManager.sol";
-import {Hooks} from "./../../contracts/libraries/Hooks.sol";
-import {BaseHook} from "./../../contracts/BaseHook.sol";
-import {BalanceDelta} from "./../../contracts/types/BalanceDelta.sol";
+import {IPoolManager} from "./../contracts/interfaces/IPoolManager.sol";
+import {Hooks} from "./../contracts/libraries/Hooks.sol";
+import {BaseHook} from "./../contracts/BaseHook.sol";
+import {BalanceDelta} from "./../contracts/types/BalanceDelta.sol";
 import "./CypherSwapTreasury.sol";
-import "./../types/PoolKey.sol";
+import "./types/PoolKey.sol";
 import "./CypherSwapClaimReceiptNFT.sol";
 
 contract CypherSwapHook is BaseHook {
