@@ -1,5 +1,5 @@
 import { HardhatUserConfig } from "hardhat/config";
-import "@nomiclabs/hardhat-ethers";
+import "@nomiclabs/hardhat-etherscan";
 require("dotenv").config({ path: ".env" });
 
 const config: HardhatUserConfig = {
@@ -10,9 +10,9 @@ const config: HardhatUserConfig = {
         settings: {
           optimizer: {
             enabled: true,
-            runs: 200,
-          },
-        },
+            runs: 200 
+          }
+        }
       },
       {
         version: "0.8.20",
@@ -35,11 +35,16 @@ const config: HardhatUserConfig = {
     },
     mumbai: {
       url: `https://polygon-mumbai.g.alchemy.com/v2/${process.env.ALCHEMY_MUMBAI_KEY}`,
+      chainId: 80001,
       accounts: [process.env.PRIVATE_KEY!],
     },
     local: {
       url: "http://localhost:8545"
     },
+    
+  },
+  etherscan: {
+    apiKey: process.env.ETHERSCAN_API_KEY,
   },
   mocha: {
     timeout: 180000000, // Timeout value in milliseconds

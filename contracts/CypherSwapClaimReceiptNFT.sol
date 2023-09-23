@@ -3,13 +3,13 @@ pragma solidity ^0.8.19;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "./CypherSwapDatacore.sol";
-import "./CypherSwapAccessControl.sol";
+// import "./CypherSwapAccessControl.sol";
 import "./CypherSwapHook.sol";
 import {BalanceDelta} from "./../contracts/types/BalanceDelta.sol";
 
 contract CypherSwapClaimReceiptNFT is ERC721 {
     CypherSwapDatacore private _cypherSwapDatacore;
-    CypherSwapAccessControl private _cypherSwapAccessControl;
+    // CypherSwapAccessControl private _cypherSwapAccessControl;
     CypherSwapHook private _cypherSwapHook;
     uint256 private _tokenCount;
 
@@ -28,13 +28,13 @@ contract CypherSwapClaimReceiptNFT is ERC721 {
         _;
     }
 
-    modifier onlyAdmin() {
-        require(
-            _cypherSwapAccessControl.isAdmin(msg.sender),
-            "CypherSwapClaimReceiptNFT: Only Admin can run this function."
-        );
-        _;
-    }
+    // modifier onlyAdmin() {
+    //     require(
+    //         _cypherSwapAccessControl.isAdmin(msg.sender),
+    //         "CypherSwapClaimReceiptNFT: Only Admin can run this function."
+    //     );
+    //     _;
+    // }
 
     modifier onlyCypherSwapHook() {
         require(
@@ -44,20 +44,21 @@ contract CypherSwapClaimReceiptNFT is ERC721 {
         _;
     }
 
-    modifier onlyAssignedPKP() {
-        require(
-            msg.sender == _cypherSwapAccessControl.getAssignedPKPAddress(),
-            "CypherSwapClaimReceiptNFT: Only Assigned PKP can run this function."
-        );
-        _;
-    }
+    // modifier onlyAssignedPKP() {
+    //     require(
+    //         msg.sender == _cypherSwapAccessControl.getAssignedPKPAddress(),
+    //         "CypherSwapClaimReceiptNFT: Only Assigned PKP can run this function."
+    //     );
+    //     _;
+    // }
 
-    constructor(
-        address _cypherSwapAccessControlAddress
-    ) ERC721("CypherSwapClaimReceiptNFT", "CTNFT") {
-        _cypherSwapAccessControl = CypherSwapAccessControl(
-            _cypherSwapAccessControlAddress
-        );
+    constructor()
+        // address _cypherSwapAccessControlAddress
+        ERC721("CypherSwapClaimReceiptNFT", "CTNFT")
+    {
+        // _cypherSwapAccessControl = CypherSwapAccessControl(
+        //     _cypherSwapAccessControlAddress
+        // );
     }
 
     function mint(
@@ -86,7 +87,7 @@ contract CypherSwapClaimReceiptNFT is ERC721 {
     function tokenIdMetricsToPoolRatio(
         uint256 _metricScore,
         uint256 _tokenId
-    ) public onlyAssignedPKP {
+    ) public {
         // put as 10^6 on chain
         _tokenIdToPoolRatio[_tokenId] = _metricScore;
     }
@@ -104,27 +105,27 @@ contract CypherSwapClaimReceiptNFT is ERC721 {
         _tokenIdToCrantComplete[_tokenId] = true;
     }
 
-    function updateCypherSwapHook(address _newAddress) public onlyAdmin {
+    function updateCypherSwapHook(address _newAddress) public {
         _cypherSwapHook = CypherSwapHook(_newAddress);
     }
 
-    function updateCypherSwapDatacore(address _newAddress) public onlyAdmin {
+    function updateCypherSwapDatacore(address _newAddress) public {
         _cypherSwapDatacore = CypherSwapDatacore(_newAddress);
     }
 
-    function updateCypherSwapAccessControl(
-        address _newAddress
-    ) public onlyAdmin {
-        _cypherSwapAccessControl = CypherSwapAccessControl(_newAddress);
-    }
+    // function updateCypherSwapAccessControl(
+    //     address _newAddress
+    // ) public  {
+    //     _cypherSwapAccessControl = CypherSwapAccessControl(_newAddress);
+    // }
 
     function getCypherSwapDatacoreAddress() public view returns (address) {
         return address(_cypherSwapDatacore);
     }
 
-    function getCypherSwapAccessControlAddress() public view returns (address) {
-        return address(_cypherSwapAccessControl);
-    }
+    // function getCypherSwapAccessControlAddress() public view returns (address) {
+    //     return address(_cypherSwapAccessControl);
+    // }
 
     function getTotalCount() public view returns (uint256) {
         return _tokenCount;

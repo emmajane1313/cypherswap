@@ -1,4 +1,5 @@
 /** @type {import('next').NextConfig} */
+require('dotenv').config();
 const allowedOrigins = [
   "https://api-mumbai.lens.dev",
   "https://chromadin.infura-ipfs.io",
