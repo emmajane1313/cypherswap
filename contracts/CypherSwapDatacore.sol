@@ -56,7 +56,7 @@ contract CypherSwapDatacore {
         uint256 profileId;
         uint256 milestoneCount;
     }
-
+    
     mapping(address => bytes32) private _addressToIdentifier;
     mapping(bytes32 => mapping(uint256 => Grant)) private _identifierToGrant;
     mapping(bytes32 => mapping(uint256 => mapping(uint256 => Milestone)))

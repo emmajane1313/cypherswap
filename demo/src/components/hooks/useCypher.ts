@@ -5,12 +5,15 @@ import LensHubAbi from "../../../abi/LensHub.json";
 import DatacoreAbi from "../../../abi/Datacore.json";
 import TreasuryAbi from "../../../abi/Treasury.json";
 import FeeCollectAbi from "../../../abi/FeeCollect.json";
+import ClaimReceiptNFTAbi from "../../../abi/ClaimReceiptNFT.json";
 import { useState, FormEvent, useEffect } from "react";
 import {
   LENS_HUB_ADRESS,
   TREASURY_ADRESS,
   DATACORE_ADRESS,
   PKP_TOKEN_ID,
+  NFT_CLAIM_RECEIPT_ADDRESS,
+  BASE_URL,
 } from "../../../lib/constants";
 import { privateKeyToAccount } from "viem/accounts";
 import { splitSignature } from "ethers/lib/utils.js";
@@ -312,8 +315,6 @@ const useCypher = () => {
     }
   };
 
-  console.log({ collected, reacted });
-
   const callCollectApproval = async (): Promise<void> => {
     try {
       const { approvalArgs, contractAddress } = await checkApproved(
@@ -321,13 +322,10 @@ const useCypher = () => {
         "FeeCollectModule",
         "0.01"
       );
-      console.log({ approvalArgs });
       const clientWallet = createWalletClient({
         chain: polygonMumbai,
         transport: custom((window as any).ethereum),
       });
-
-      console.log({ contractAddress });
 
       const { request } = await publicClient.simulateContract({
         address: "0x9c3C9283D3e44854697Cd22D3Faa240Cfb032889",
@@ -375,8 +373,6 @@ const useCypher = () => {
         ]
       );
 
-      console.log({ tx });
-
       await litExecute(
         provider,
         litClient,
@@ -389,109 +385,42 @@ const useCypher = () => {
     }
   };
 
-  const checkUSDBalanceInPool = async () => {
+  const metricsAlgorithm = async () => {
     try {
-      // if grant has interaction data
-      if (typeof window !== "undefined" && "ethereum" in window) {
-        await litClient.connect();
-        const web3Provider = new ethers.providers.Web3Provider(
-          (window as any)?.ethereum!
-        );
-        const connectedSigner = web3Provider.getSigner();
-        const authSig = await generateAuthSig(
-          connectedSigner as ethers.Signer,
-          LitChainIds["mumbai"]
-        );
-        console.log({ authSig });
-        const chronicleProvider = new ethers.providers.JsonRpcProvider(
-          "https://chain-rpc.litprotocol.com/http",
-          175177
-        );
-        const chronicleSigner = new ethers.Wallet(
-          process.env.NEXT_PUBLIC_PRIVATE_KEY!,
-          chronicleProvider
-        );
+      const { data } = await getPublication({
+        publicationId: publication.id,
+      });
 
-        const newCircuit = new Circuit(chronicleSigner);
-        newCircuit.setConditions([
-          new ContractCondition(
-            LENS_HUB_ADRESS,
-            LensHubAbi,
-            CHAIN_NAME.MUMBAI,
-            `https://polygon-mumbai.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_ALCHEMY_MUMBAI_KEY}`,
-            "PostCreated",
-            ["profileId", "pubId"],
-            [parseInt(profile.id, 16), publication.id],
-            "==",
-            async () => console.log("matched"),
-            async () => console.log("unmatched"),
-            async (error) => console.log("error", error.message)
-          ),
-        ]);
-        const { unsignedTransactionDataObject, litActionCode } =
-          await newCircuit.setActions([
-            {
-              type: "contract",
-              priority: 0,
-              contractAddress: DATACORE_ADRESS,
-              abi: DatacoreAbi,
-              functionName: "initializeGrantRecipient",
-              chainId: CHAIN_NAME.MUMBAI,
-              nonce: 1,
-              gasLimit: 100000,
-              value: 0,
-              providerURL: `https://polygon-mumbai.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_ALCHEMY_MUMBAI_KEY}`,
-              maxPriorityFeePerGas: 1000,
-              maxFeePerGas: 10000,
-              args: [
-                {
-                  _granteeAddresses: [address],
-                  _milestoneId: [1, 2, 3],
-                  _claimBy: postDescription.claimBy,
-                  _claimFrom: postDescription.claimFrom,
-                  _amount: postDescription.amounts.map((item: string) =>
-                    Number(item)
-                  ),
-                  _splitAmounts: [100],
-                  _pubId: pubId,
-                },
-              ],
-            },
-          ]);
-        newCircuit.setConditionalLogic({
-          type: "EVERY",
-          interval: 20000,
-        });
-        newCircuit.executionConstraints({
-          startDate: new Date(),
-        });
-        const response = await fetch("api/ipfs", {
-          method: "POST",
-          body: litActionCode,
-        });
-        console.log({ response });
-        const ipfsCID = (await response.json()).cid;
-        const {
-          publicKey,
-          tokenId,
-          address: ethAddress,
-        } = await newCircuit.mintGrantBurnPKP(ipfsCID);
-        console.log({ publicKey });
-        newCircuit.start({
-          publicKey: publicKey,
-          ipfsCID,
-          authSig,
-          broadcast: true,
-        });
-        console.log("started");
-      }
+      // graphql query all grantees
+      // calculate metric ratio for share of the pool
+
+      // calculate the metric status of the publication relative to other grantees posts and engagement
+
+      // only 1 grantee, 100% of bonus pool
+      return 100;
     } catch (err: any) {
       console.error(err.message);
     }
   };
 
-  const lensInteractionInterval = async () => {
+  const checkBonusTreasuryBalance = async () => {
     try {
+    } catch (err: any) {
+      console.error(err.message);
+    }
+  };
+
+  const metricsQueryGrantees = async () => {
+    // replace with server instance and algo update!!
+    try {
+      const metricsScore = await metricsAlgorithm();
+      const tokenId = await publicClient.readContract({
+        address: NFT_CLAIM_RECEIPT_ADDRESS,
+        abi: ClaimReceiptNFTAbi,
+        functionName: "getPubIdToTokenId",
+        args: [publication.id],
+      });
+
       if (typeof window !== "undefined" && "ethereum" in window) {
         await litClient.connect();
         const web3Provider = new ethers.providers.Web3Provider(
@@ -513,16 +442,17 @@ const useCypher = () => {
 
         const newCircuit = new Circuit(chronicleSigner);
 
+        // only run the set conditons if the grantee has metrics
+        // verify 24 hour period thru time api
+        // check server not lagging on time since started (server only functional, change later, once per day query)
         newCircuit.setConditions([
-          new ContractCondition(
-            LENS_HUB_ADRESS,
-            LensHubAbi,
-            CHAIN_NAME.MUMBAI,
-            `https://polygon-mumbai.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_ALCHEMY_MUMBAI_KEY}`,
-            "PostCreated",
-            ["profileId", "pubId"],
-            [parseInt(profile.id, 16), publication.id],
+          new WebhookCondition(
+            "https://timeapi.io/api/",
+            "Time/current/zone?timeZone=America/New_York",
+            "time",
+            `02:14`,
             "==",
+            undefined,
             async () => console.log("matched"),
             async () => console.log("unmatched"),
             async (error) => console.log("error", error.message)
@@ -533,9 +463,9 @@ const useCypher = () => {
             {
               type: "contract",
               priority: 0,
-              contractAddress: DATACORE_ADRESS,
-              abi: DatacoreAbi,
-              functionName: "initializeGrantRecipient",
+              contractAddress: NFT_CLAIM_RECEIPT_ADDRESS,
+              abi: ClaimReceiptNFTAbi,
+              functionName: "tokenIdMetricsToPoolRatio",
               chainId: CHAIN_NAME.MUMBAI,
               nonce: 1,
               gasLimit: 100000,
@@ -543,22 +473,13 @@ const useCypher = () => {
               providerURL: `https://polygon-mumbai.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_ALCHEMY_MUMBAI_KEY}`,
               maxPriorityFeePerGas: 1000,
               maxFeePerGas: 10000,
-              args: [
-                {
-                  _granteeAddresses: [address],
-                  _milestoneId: [1, 2, 3],
-                  _claimBy: postDescription.claimBy,
-                  _claimFrom: postDescription.claimFrom,
-                  _amount: [5000, 5000, 5000],
-                  _splitAmounts: [100],
-                  _pubId: pubId,
-                },
-              ],
+              args: [metricsScore, tokenId],
             },
           ]);
+
         newCircuit.setConditionalLogic({
           type: "EVERY",
-          interval: 20000,
+          interval: 86400000,
         });
         newCircuit.executionConstraints({
           startDate: new Date(),
@@ -567,21 +488,18 @@ const useCypher = () => {
           method: "POST",
           body: litActionCode,
         });
-        console.log({ response });
         const ipfsCID = (await response.json()).cid;
         const {
           publicKey,
-          tokenId,
+          tokenId: pkpTokenId,
           address: ethAddress,
         } = await newCircuit.mintGrantBurnPKP(ipfsCID);
-        console.log({ publicKey });
         newCircuit.start({
           publicKey: publicKey,
           ipfsCID,
           authSig,
           broadcast: true,
         });
-        console.log("started");
       }
     } catch (err: any) {
       console.error(err.message);
@@ -751,7 +669,13 @@ const useCypher = () => {
     });
   }, []);
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    if (publication?.id) {
+      // change to server instance running
+      metricsQueryGrantees();
+      checkBonusTreasuryBalance();
+    }
+  }, []);
 
   return {
     setPostDescription,
