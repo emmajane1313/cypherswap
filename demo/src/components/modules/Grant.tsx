@@ -50,6 +50,7 @@ const Grant: FunctionComponent<GrantProps> = ({
               teamInfo: postDescription.teamInfo,
               challenge: postDescription.challenge,
               value: postDescription.value,
+              amounts: postDescription.amounts,
             })
           }
           value={postDescription.title}
@@ -74,6 +75,7 @@ const Grant: FunctionComponent<GrantProps> = ({
               teamInfo: postDescription.teamInfo,
               challenge: postDescription.challenge,
               value: postDescription.value,
+              amounts: postDescription.amounts,
             })
           }
           style={{ resize: "none" }}
@@ -101,6 +103,7 @@ const Grant: FunctionComponent<GrantProps> = ({
                 teamInfo: postDescription.teamInfo,
                 challenge: e.target.value,
                 value: postDescription.value,
+                amounts: postDescription.amounts,
               })
             }
             style={{ resize: "none" }}
@@ -152,6 +155,7 @@ const Grant: FunctionComponent<GrantProps> = ({
               teamInfo: e.target.value,
               challenge: postDescription.challenge,
               value: postDescription.value,
+              amounts: postDescription.amounts,
             })
           }
           value={postDescription.teamInfo}
@@ -159,6 +163,7 @@ const Grant: FunctionComponent<GrantProps> = ({
           disabled={publication ? true : false}
         ></textarea>
       </div>
+      <div className="relative w-full h-12 border border-white rounded-lg"></div>
     </div>
   );
 };

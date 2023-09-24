@@ -73,6 +73,7 @@ const useLens = () => {
     claimBy: number[];
     claimFrom: number[];
     value: string;
+    amounts: string[];
   }>({
     title: "Grant Title",
     description: "Grant Description...",
@@ -93,6 +94,7 @@ const useLens = () => {
       // new Date().setDate(new Date().getDate()),
     ],
     value: "",
+    amounts: [],
   });
   const [contentURI, setContentURI] = useState<string>();
   const [coverImageValue, setCoverImageValue] = useState<FormEvent>();
@@ -447,7 +449,9 @@ const useLens = () => {
                   _milestoneId: [1, 2, 3],
                   _claimBy: postDescription.claimBy,
                   _claimFrom: postDescription.claimFrom,
-                  _amount: [5000, 5000, 5000],
+                  _amount: postDescription.amounts.map((item: string) =>
+                    Number(item)
+                  ),
                   _splitAmounts: [100],
                   _pubId: pubId,
                 },
@@ -744,6 +748,7 @@ const useLens = () => {
         new Date().setDate(new Date().getDate()),
       ],
       value: "",
+      amounts: ["5000", "5000", "5000"],
     });
   }, []);
 

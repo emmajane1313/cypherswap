@@ -35,11 +35,33 @@ const Milestone: FunctionComponent<MilestoneProps> = ({
             <div className="relative w-full h-fit flex items-center justify-start font-on text-2xl uppercase">
               Milestone 3
             </div>
-            <input
-              className="text-white font-dogB flex items-center justify-center bg-black text-xs w-20 h-fit flex"
-              defaultValue="$5000"
-              disabled
-            />
+            <div className="relative gap-px flex flex-row text-xs items-center justify-center">
+              <div className="relative w-fit h-fit text font-dogB flex items-center justify-center">
+                $
+              </div>
+              <input
+                className="text-white font-dogB flex items-center justify-center bg-black text-xs w-20 h-fit flex"
+                value={postDescription.amounts[2]}
+                disabled={publication ? true : false}
+                onChange={(e) => {
+                  const updatedAmount = [...postDescription.amounts];
+                  updatedAmount[2] = e.target.value;
+                  setPostDescription({
+                    title: postDescription.title,
+                    description: postDescription.description,
+                    milestoneOne: postDescription.milestoneOne,
+                    milestoneTwo: postDescription.milestoneTwo,
+                    milestoneThree: postDescription.milestoneThree,
+                    claimBy: postDescription.claimBy,
+                    claimFrom: postDescription.claimFrom,
+                    teamInfo: postDescription.teamInfo,
+                    challenge: postDescription.challenge,
+                    value: postDescription.value,
+                    amounts: updatedAmount,
+                  });
+                }}
+              />
+            </div>
           </div>
           <div className="relative w-full h-fit flex flex-col font-dog text-xxs gap-1.5 text-white">
             <div className="flex relative w-fit h-fit justify-center items-start">
@@ -61,9 +83,11 @@ const Milestone: FunctionComponent<MilestoneProps> = ({
                     teamInfo: postDescription.teamInfo,
                     challenge: postDescription.challenge,
                     value: postDescription.value,
+                    amounts: postDescription.amounts,
                   });
                 }}
                 className="bg-black text-white font-dog text-xxs w-48 h-3"
+                disabled={publication ? true : false}
               />
             </div>
             <div className="flex relative w-fit h-fit justify-center items-start">
@@ -85,9 +109,11 @@ const Milestone: FunctionComponent<MilestoneProps> = ({
                     teamInfo: postDescription.teamInfo,
                     challenge: postDescription.challenge,
                     value: postDescription.value,
+                    amounts: postDescription.amounts,
                   });
                 }}
                 className="bg-black text-white font-dog text-xxs w-48 h-3"
+                disabled={publication ? true : false}
               />
             </div>
             <div className="flex relative w-fit h-fit justify-center items-start">
@@ -109,9 +135,11 @@ const Milestone: FunctionComponent<MilestoneProps> = ({
                     teamInfo: postDescription.teamInfo,
                     challenge: postDescription.challenge,
                     value: postDescription.value,
+                    amounts: postDescription.amounts,
                   });
                 }}
                 className="bg-black text-white font-dog text-xxs w-48 h-3"
+                disabled={publication ? true : false}
               />
             </div>
           </div>
@@ -159,11 +187,33 @@ const Milestone: FunctionComponent<MilestoneProps> = ({
             <div className="relative w-full h-fit flex items-center justify-start font-on text-2xl uppercase">
               Milestone 2
             </div>
-            <input
-              className="text-white font-dogB flex items-center justify-center bg-black text-xs w-20 h-fit flex"
-              defaultValue="$5000"
-              disabled
-            />
+            <div className="relative gap-px flex flex-row text-xs items-center justify-center">
+              <div className="relative w-fit h-fit text font-dogB flex items-center justify-center">
+                $
+              </div>
+              <input
+                className="text-white font-dogB flex items-center justify-center bg-black text-xs w-20 h-fit flex"
+                value={postDescription.amounts[1]}
+                disabled={publication ? true : false}
+                onChange={(e) => {
+                  const updatedAmount = [...postDescription.amounts];
+                  updatedAmount[1] = e.target.value;
+                  setPostDescription({
+                    title: postDescription.title,
+                    description: postDescription.description,
+                    milestoneOne: postDescription.milestoneOne,
+                    milestoneTwo: postDescription.milestoneTwo,
+                    milestoneThree: postDescription.milestoneThree,
+                    claimBy: postDescription.claimBy,
+                    claimFrom: postDescription.claimFrom,
+                    teamInfo: postDescription.teamInfo,
+                    challenge: postDescription.challenge,
+                    value: postDescription.value,
+                    amounts: updatedAmount,
+                  });
+                }}
+              />
+            </div>
           </div>
           <div className="relative w-full h-fit flex flex-col font-dog text-xxs gap-1.5 text-white">
             <div className="flex relative w-fit h-fit justify-center items-start">
@@ -183,9 +233,11 @@ const Milestone: FunctionComponent<MilestoneProps> = ({
                     teamInfo: postDescription.teamInfo,
                     challenge: postDescription.challenge,
                     value: postDescription.value,
+                    amounts: postDescription.amounts,
                   });
                 }}
                 className="bg-black text-white font-dog text-xxs w-48 h-3"
+                disabled={publication ? true : false}
               />
             </div>
             <div className="flex relative w-fit h-fit justify-center items-start">
@@ -205,9 +257,11 @@ const Milestone: FunctionComponent<MilestoneProps> = ({
                     teamInfo: postDescription.teamInfo,
                     challenge: postDescription.challenge,
                     value: postDescription.value,
+                    amounts: postDescription.amounts,
                   });
                 }}
                 className="bg-black text-white font-dog text-xxs w-48 h-3"
+                disabled={publication ? true : false}
               />
             </div>
             <div className="flex relative w-fit h-fit justify-center items-start">
@@ -227,9 +281,11 @@ const Milestone: FunctionComponent<MilestoneProps> = ({
                     teamInfo: postDescription.teamInfo,
                     challenge: postDescription.challenge,
                     value: postDescription.value,
+                    amounts: postDescription.amounts,
                   });
                 }}
                 className="bg-black text-white font-dog text-xxs w-48 h-3"
+                disabled={publication ? true : false}
               />
             </div>
           </div>
@@ -277,11 +333,33 @@ const Milestone: FunctionComponent<MilestoneProps> = ({
             <div className="relative w-full h-fit flex items-center justify-start font-on text-2xl uppercase">
               Milestone 1
             </div>
-            <input
-              className="text-white font-dogB flex items-center justify-center bg-black text-xs w-20 h-fit flex"
-              defaultValue="$5000"
-              disabled
-            />
+            <div className="relative gap-px flex flex-row text-xs items-center justify-center">
+              <div className="relative w-fit h-fit text font-dogB flex items-center justify-center">
+                $
+              </div>
+              <input
+                className="text-white font-dogB flex items-center justify-center bg-black text-xs w-20 h-fit flex"
+                value={postDescription.amounts[0]}
+                disabled={publication ? true : false}
+                onChange={(e) => {
+                  const updatedAmount = [...postDescription.amounts];
+                  updatedAmount[0] = e.target.value;
+                  setPostDescription({
+                    title: postDescription.title,
+                    description: postDescription.description,
+                    milestoneOne: postDescription.milestoneOne,
+                    milestoneTwo: postDescription.milestoneTwo,
+                    milestoneThree: postDescription.milestoneThree,
+                    claimBy: postDescription.claimBy,
+                    claimFrom: postDescription.claimFrom,
+                    teamInfo: postDescription.teamInfo,
+                    challenge: postDescription.challenge,
+                    value: postDescription.value,
+                    amounts: updatedAmount,
+                  });
+                }}
+              />
+            </div>
           </div>
           <div className="relative w-full h-fit flex flex-col font-dog text-xxs gap-1.5 text-white">
             <div className="flex relative w-fit h-fit justify-center items-start">
@@ -301,13 +379,14 @@ const Milestone: FunctionComponent<MilestoneProps> = ({
                     teamInfo: postDescription.teamInfo,
                     challenge: postDescription.challenge,
                     value: postDescription.value,
+                    amounts: postDescription.amounts,
                   });
                 }}
                 className="bg-black text-white font-dog text-xxs w-48 h-3"
+                disabled={publication ? true : false}
               />
             </div>
             <div className="flex relative w-fit h-fit justify-center items-start">
-              {" "}
               <input
                 value={postDescription.milestoneOne[1]}
                 onChange={(e) => {
@@ -324,13 +403,14 @@ const Milestone: FunctionComponent<MilestoneProps> = ({
                     teamInfo: postDescription.teamInfo,
                     challenge: postDescription.challenge,
                     value: postDescription.value,
+                    amounts: postDescription.amounts,
                   });
                 }}
                 className="bg-black text-white font-dog text-xxs w-48 h-3"
+                disabled={publication ? true : false}
               />
             </div>
             <div className="flex relative w-fit h-fit justify-center items-start">
-              {" "}
               <input
                 value={postDescription.milestoneOne[2]}
                 onChange={(e) => {
@@ -347,9 +427,11 @@ const Milestone: FunctionComponent<MilestoneProps> = ({
                     teamInfo: postDescription.teamInfo,
                     challenge: postDescription.challenge,
                     value: postDescription.value,
+                    amounts: postDescription.amounts,
                   });
                 }}
                 className="bg-black text-white font-dog text-xxs w-48 h-3"
+                disabled={publication ? true : false}
               />
             </div>
           </div>

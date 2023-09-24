@@ -32,6 +32,7 @@ export type GrantProps = {
     teamInfo: string;
     claimBy: number[];
     claimFrom: number[];
+    amounts: string[]
     value: string;
   };
   collected: boolean;
@@ -46,6 +47,7 @@ export type GrantProps = {
     teamInfo: string;
     claimBy: number[];
     claimFrom: number[];
+    amounts: string[]
     value: string;
   }) => void;
   setCoverImageValue: (e: FormEvent<Element>) => void;
@@ -78,6 +80,7 @@ export type MilestoneProps = {
     claimBy: number[];
     claimFrom: number[];
     value: string;
+    amounts: string[]
   };
   setPostDescription: (e: {
     title: string;
@@ -90,6 +93,7 @@ export type MilestoneProps = {
     claimBy: number[];
     claimFrom: number[];
     value: string;
+    amounts: string[]
   }) => void;
   publication: any;
   collected: boolean;
