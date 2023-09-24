@@ -3,12 +3,11 @@ pragma solidity ^0.8.19;
 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "./CypherSwapDatacore.sol";
-
-// import "./CypherSwapAccessControl.sol";
+import "./CypherSwapAccessControl.sol";
 
 contract CypherSwapClaimReceipt is ERC20 {
     CypherSwapDatacore private _cypherSwapDatacore;
-    // CypherSwapAccessControl private _cypherSwapAccessControl;
+    CypherSwapAccessControl private _cypherSwapAccessControl;
 
     modifier onlyCypherSwapDatacoreContract() {
         require(
@@ -18,18 +17,20 @@ contract CypherSwapClaimReceipt is ERC20 {
         _;
     }
 
-    // modifier onlyAdmin() {
-    //     require(
-    //         _cypherSwapAccessControl.isAdmin(msg.sender),
-    //         "CypherSwapClaimReceipt: Only Admin can run this function."
-    //     );
-    //     _;
-    // }
+    modifier onlyAdmin() {
+        require(
+            _cypherSwapAccessControl.isAdmin(msg.sender),
+            "CypherSwapClaimReceipt: Only Admin can run this function."
+        );
+        _;
+    }
 
-    constructor() ERC20("CypherSwapClaimReceipt", "CTGR") {
-        // _cypherSwapAccessControl = CypherSwapAccessControl(
-        //     _cypherSwapAccessControlAddress
-        // );
+    constructor(
+        address _cypherSwapAccessControlAddress
+    ) ERC20("CypherSwapClaimReceipt", "CTGR") {
+        _cypherSwapAccessControl = CypherSwapAccessControl(
+            _cypherSwapAccessControlAddress
+        );
     }
 
     function mint(
@@ -50,17 +51,15 @@ contract CypherSwapClaimReceipt is ERC20 {
         _cypherSwapDatacore = CypherSwapDatacore(_newAddress);
     }
 
-    // function updateCypherSwapAccessControl(
-    //     address _newAddress
-    // ) public  {
-    //     _cypherSwapAccessControl = CypherSwapAccessControl(_newAddress);
-    // }
+    function updateCypherSwapAccessControl(address _newAddress) public {
+        _cypherSwapAccessControl = CypherSwapAccessControl(_newAddress);
+    }
 
     function getCypherSwapDatacoreAddress() public view returns (address) {
         return address(_cypherSwapDatacore);
     }
 
-    // function getCypherSwapAccessControlAddress() public view returns (address) {
-    //     return address(_cypherSwapAccessControl);
-    // }
+    function getCypherSwapAccessControlAddress() public view returns (address) {
+        return address(_cypherSwapAccessControl);
+    }
 }

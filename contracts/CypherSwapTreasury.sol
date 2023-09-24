@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: UNLICENSE
 pragma solidity ^0.8.19;
-// import "./CypherSwapAccessControl.sol";
+import "./CypherSwapAccessControl.sol";
 import "./CypherSwapClaimReceipt.sol";
 import "./CypherSwapDatacore.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
@@ -11,7 +11,7 @@ import "./types/PoolKey.sol";
 contract CypherSwapTreasury {
     string public symbol;
     string public name;
-    // CypherSwapAccessControl private _cypherSwapAccessControl;
+    CypherSwapAccessControl private _cypherSwapAccessControl;
     CypherSwapClaimReceipt private _cypherSwapClaimReceipt;
     CypherSwapDatacore private _cypherSwapDatacore;
     IPoolManager public _poolManager;
@@ -28,21 +28,21 @@ contract CypherSwapTreasury {
         uint256 usdBalance
     );
 
-    // modifier onlyAdmin() {
-    //     require(
-    //         _cypherSwapAccessControl.isAdmin(msg.sender),
-    //         "CypherSwapTreasury: Only Admin can run this function."
-    //     );
-    //     _;
-    // }
+    modifier onlyAdmin() {
+        require(
+            _cypherSwapAccessControl.isAdmin(msg.sender),
+            "CypherSwapTreasury: Only Admin can run this function."
+        );
+        _;
+    }
 
-    // modifier onlyAssignedPKP() {
-    //     require(
-    //         msg.sender == _cypherSwapAccessControl.getAssignedPKPAddress(),
-    //         "CypherSwapTreasury: Only Assigned PKP can run this function."
-    //     );
-    //     _;
-    // }
+    modifier onlyAssignedPKP() {
+        require(
+            msg.sender == _cypherSwapAccessControl.getAssignedPKPAddress(),
+            "CypherSwapTreasury: Only Assigned PKP can run this function."
+        );
+        _;
+    }
 
     modifier onlyCypherSwapDatacore() {
         require(
@@ -53,7 +53,7 @@ contract CypherSwapTreasury {
     }
 
     constructor(
-        // address _cypherSwapAccessControlAddress,
+        address _cypherSwapAccessControlAddress,
         address _cypherSwapClaimReceiptAddress,
         address _cypherSwapDatacoreAddress,
         address _usdTokenAddress,
@@ -62,9 +62,9 @@ contract CypherSwapTreasury {
     ) {
         symbol = "CST";
         name = "CypherSwapTreasury";
-        // _cypherSwapAccessControl = CypherSwapAccessControl(
-        //     _cypherSwapAccessControlAddress
-        // );
+        _cypherSwapAccessControl = CypherSwapAccessControl(
+            _cypherSwapAccessControlAddress
+        );
         _cypherSwapClaimReceipt = CypherSwapClaimReceipt(
             _cypherSwapClaimReceiptAddress
         );
@@ -201,17 +201,17 @@ contract CypherSwapTreasury {
         return _finalUSDTBalance - _initialUSDTBalance;
     }
 
-    // function getCypherSwapAccessControlAddress() public view returns (address) {
-    //     return address(_cypherSwapAccessControl);
-    // }
+    function getCypherSwapAccessControlAddress() public view returns (address) {
+        return address(_cypherSwapAccessControl);
+    }
 
     function getCypherSwapClaimReceiptAddress() public view returns (address) {
         return address(_cypherSwapClaimReceipt);
     }
 
-    // function getCypherSwapDatacoreAddress() public view returns (address) {
-    //     return address(_cypherSwapAccessControl);
-    // }
+    function getCypherSwapDatacoreAddress() public view returns (address) {
+        return address(_cypherSwapAccessControl);
+    }
 
     function getTotalTreasuryBalance() public view returns (uint256) {
         return _usdBalance;

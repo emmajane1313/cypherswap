@@ -3,7 +3,7 @@ pragma solidity ^0.8.19;
 
 import {LensHub, DataTypes} from "@aave/lens-protocol/contracts/core/LensHub.sol";
 import {IPoolManager, Currency} from "./../contracts/interfaces/IPoolManager.sol";
-// import "./CypherSwapAccessControl.sol";
+import "./CypherSwapAccessControl.sol";
 import "./CypherSwapClaimReceipt.sol";
 import "./CypherSwapTreasury.sol";
 import "./CypherSwapClaimReceiptNFT.sol";
@@ -25,7 +25,7 @@ library CypherSwapParamsLibrary {
 contract CypherSwapDatacore {
     string public symbol;
     string public name;
-    // CypherSwapAccessControl private _cypherSwapAccessControl;
+    CypherSwapAccessControl private _cypherSwapAccessControl;
     CypherSwapClaimReceipt private _cypherSwapClaimReceipt;
     CypherSwapClaimReceiptNFT private _cypherSwapClaimReceiptNFT;
     LensHub private _lensHub;
@@ -56,7 +56,7 @@ contract CypherSwapDatacore {
         uint256 profileId;
         uint256 milestoneCount;
     }
-    
+
     mapping(address => bytes32) private _addressToIdentifier;
     mapping(bytes32 => mapping(uint256 => Grant)) private _identifierToGrant;
     mapping(bytes32 => mapping(uint256 => mapping(uint256 => Milestone)))
@@ -85,21 +85,21 @@ contract CypherSwapDatacore {
         uint256 profileId
     );
 
-    // modifier onlyAssignedPKP() {
-    //     require(
-    //         msg.sender == _cypherSwapAccessControl.getAssignedPKPAddress(),
-    //         "CypherSwapDatacore: Only Assigned PKP can run this function."
-    //     );
-    //     _;
-    // }
+    modifier onlyAssignedPKP() {
+        require(
+            msg.sender == _cypherSwapAccessControl.getAssignedPKPAddress(),
+            "CypherSwapDatacore: Only Assigned PKP can run this function."
+        );
+        _;
+    }
 
-    // modifier onlyAdmin() {
-    //     require(
-    //         _cypherSwapAccessControl.isAdmin(msg.sender),
-    //         "CypherSwapDatacore: Only Admin can run this function."
-    //     );
-    //     _;
-    // }
+    modifier onlyAdmin() {
+        require(
+            _cypherSwapAccessControl.isAdmin(msg.sender),
+            "CypherSwapDatacore: Only Admin can run this function."
+        );
+        _;
+    }
 
     modifier onlyGranteeAddress(uint256 _postId) {
         bytes32 _grantIdentifier = _addressToIdentifier[msg.sender];
@@ -111,7 +111,7 @@ contract CypherSwapDatacore {
     }
 
     constructor(
-        // address _cypherSwapAccessControlAddress,
+        address _cypherSwapAccessControlAddress,
         address _cypherSwapClaimReceiptAddress,
         address _lensHubAddress,
         address _cypherSwapClaimReceiptNFTAddress,
@@ -120,9 +120,9 @@ contract CypherSwapDatacore {
     ) {
         symbol = "GrantDatabase";
         name = "GDB";
-        // _cypherSwapAccessControl = CypherSwapAccessControl(
-        //     _cypherSwapAccessControlAddress
-        // );
+        _cypherSwapAccessControl = CypherSwapAccessControl(
+            _cypherSwapAccessControlAddress
+        );
         _cypherSwapClaimReceipt = CypherSwapClaimReceipt(
             _cypherSwapClaimReceiptAddress
         );
@@ -136,7 +136,7 @@ contract CypherSwapDatacore {
 
     function initializeGrantRecipient(
         CypherSwapParamsLibrary.InitializeGrant memory _initializeGrantParams
-    ) public {
+    ) public onlyAssignedPKP {
         require(
             _initializeGrantParams._milestoneId.length ==
                 _initializeGrantParams._claimBy.length &&
@@ -429,29 +429,25 @@ contract CypherSwapDatacore {
         _cypherSwapClaimReceipt.mint(msg.sender, _mintAmount);
     }
 
-    function setCypherSwapTreasury(
-        address _grantTreasuryAddress
-    ) public {
+    function setCypherSwapTreasury(address _grantTreasuryAddress) public {
         _cypherSwapTreasury = CypherSwapTreasury(_grantTreasuryAddress);
     }
 
-    // function updateCypherSwapAccessControl(
-    //     address _newAddress
-    // ) public  {
-    //     _cypherSwapAccessControl = CypherSwapAccessControl(_newAddress);
-    // }
-
-    function updateCypherSwapClaimReceipt(
+    function updateCypherSwapAccessControl(
         address _newAddress
     ) public  {
+        _cypherSwapAccessControl = CypherSwapAccessControl(_newAddress);
+    }
+
+    function updateCypherSwapClaimReceipt(address _newAddress) public {
         _cypherSwapClaimReceipt = CypherSwapClaimReceipt(_newAddress);
     }
 
-    function updateLensHub(address _newAddress) public  {
+    function updateLensHub(address _newAddress) public {
         _lensHub = LensHub(_newAddress);
     }
 
-    function updateCypherSwapHook(address _newAddress) public  {
+    function updateCypherSwapHook(address _newAddress) public {
         _cypherSwapHook = CypherSwapHook(_newAddress);
     }
 
@@ -557,9 +553,9 @@ contract CypherSwapDatacore {
             ];
     }
 
-    // function getCypherSwapAccessControlAddress() public view returns (address) {
-    //     return address(_cypherSwapAccessControl);
-    // }
+    function getCypherSwapAccessControlAddress() public view returns (address) {
+        return address(_cypherSwapAccessControl);
+    }
 
     function getCypherSwapClaimReceiptAddress() public view returns (address) {
         return address(_cypherSwapClaimReceipt);
