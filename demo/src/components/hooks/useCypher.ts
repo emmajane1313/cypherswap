@@ -1,10 +1,10 @@
 import { createPublicClient, createWalletClient, custom, http } from "viem";
 import * as LitJsSdk from "@lit-protocol/lit-node-client";
 import { polygonMumbai } from "viem/chains";
-import LensHubAbi from "./../../../abi/LensHub.json";
-import DatacoreAbi from "./../../../abi/Datacore.json";
-import TreasuryAbi from "./../../../abi/Treasury.json";
-import FeeCollectAbi from "./../../../abi/FeeCollect.json";
+import LensHubAbi from "../../../abi/LensHub.json";
+import DatacoreAbi from "../../../abi/Datacore.json";
+import TreasuryAbi from "../../../abi/Treasury.json";
+import FeeCollectAbi from "../../../abi/FeeCollect.json";
 import { useState, FormEvent, useEffect } from "react";
 import {
   LENS_HUB_ADRESS,
@@ -42,7 +42,7 @@ import { mirror } from "../../../graphql/mutations/mirror";
 import addReaction from "../../../graphql/mutations/react";
 import checkApproved from "../../../lib/helpers/checkApproved";
 
-const useLens = () => {
+const useCypher = () => {
   const publicClient = createPublicClient({
     chain: polygonMumbai,
     transport: http(
@@ -776,4 +776,4 @@ const useLens = () => {
   };
 };
 
-export default useLens;
+export default useCypher;

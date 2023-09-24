@@ -1,4 +1,4 @@
-import useLens from "@/components/hooks/useLens";
+import useCypher from "@/components/hooks/useCypher";
 import Bonus from "@/components/modules/Bonus";
 import Grant from "@/components/modules/Grant";
 import Header from "@/components/modules/Header";
@@ -27,7 +27,7 @@ export default function Home() {
     currentMilestone,
     handleMirrorLike,
     claimLoading,
-  } = useLens();
+  } = useCypher();
   console.log({ publication });
   const { openConnectModal } = useConnectModal();
   return (
