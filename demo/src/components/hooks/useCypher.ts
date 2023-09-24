@@ -405,6 +405,7 @@ const useCypher = () => {
 
   const checkBonusTreasuryBalance = async () => {
     try {
+      
     } catch (err: any) {
       console.error(err.message);
     }

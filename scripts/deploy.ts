@@ -21,13 +21,6 @@ async function main() {
   // );
   // const CypherSwapHook = await ethers.getContractFactory("CypherSwapHook");
 
-  // const usdtToken = await UsdtToken.deploy(
-  //   "0x2ffd013aaa7b5a7da93336c2251075202b33fb2b",
-  //   "0x9fc9c2dfba3b6cf204c37a5f690619772b926e39",
-  //   "0xad9fbd38281f615e7df3def2aad18935a9e0ffee",
-  //   "0x8bffc896d42f07776561a5814d6e4240950d6d3a"
-  // );
-
   // const cypherSwapClaimReceipt = await CypherSwapClaimReceipt.deploy();
   // const cypherSwapClaimReceiptNFT = await CypherSwapClaimReceiptNFT.deploy();
   // const cypherSwapDatacore = await CypherSwapDatacore.deploy(
