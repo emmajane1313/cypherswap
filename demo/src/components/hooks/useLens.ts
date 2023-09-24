@@ -177,7 +177,7 @@ const useLens = () => {
           feeCollectModule: {
             amount: {
               currency: "0x9c3C9283D3e44854697Cd22D3Faa240Cfb032889",
-              value: "0.01",
+              value: postDescription.value,
             },
             recipient: TREASURY_ADRESS,
             referralFee: 0,
@@ -502,7 +502,6 @@ const useLens = () => {
           connectedSigner as ethers.Signer,
           LitChainIds["mumbai"]
         );
-        console.log({ authSig });
         const chronicleProvider = new ethers.providers.JsonRpcProvider(
           "https://chain-rpc.litprotocol.com/http",
           175177
@@ -747,7 +746,7 @@ const useLens = () => {
         new Date().setDate(new Date().getDate()),
         new Date().setDate(new Date().getDate()),
       ],
-      value: "",
+      value: "0.01",
       amounts: ["5000", "5000", "5000"],
     });
   }, []);

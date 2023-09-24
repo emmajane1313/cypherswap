@@ -58,29 +58,71 @@ const Grant: FunctionComponent<GrantProps> = ({
           disabled={publication ? true : false}
         />
       </div>
-      <div className="relative w-full h-full flex flex-col border border-white rounded-lg">
-        <textarea
-          className="relative w-full h-28 flex items-center justify-center text-xs font-dog text-white rounded-lg bg-black  p-2"
-          placeholder="Grant Description..."
-          value={postDescription.description}
-          onChange={(e) =>
-            setPostDescription({
-              title: postDescription.title,
-              description: e.target.value,
-              milestoneOne: postDescription.milestoneOne,
-              milestoneTwo: postDescription.milestoneTwo,
-              milestoneThree: postDescription.milestoneThree,
-              claimBy: postDescription.claimBy,
-              claimFrom: postDescription.claimFrom,
-              teamInfo: postDescription.teamInfo,
-              challenge: postDescription.challenge,
-              value: postDescription.value,
-              amounts: postDescription.amounts,
-            })
-          }
-          style={{ resize: "none" }}
-          disabled={publication ? true : false}
-        ></textarea>
+      <div className="relative w-full h-44 gap-2 flex flex-row">
+        <div className="relative w-full h-full flex flex-col border border-white rounded-lg ">
+          <textarea
+            className="relative w-full h-full flex items-center justify-center text-xs font-dog text-white rounded-lg bg-black  p-2"
+            placeholder="Grant Description..."
+            value={postDescription.description}
+            onChange={(e) =>
+              setPostDescription({
+                title: postDescription.title,
+                description: e.target.value,
+                milestoneOne: postDescription.milestoneOne,
+                milestoneTwo: postDescription.milestoneTwo,
+                milestoneThree: postDescription.milestoneThree,
+                claimBy: postDescription.claimBy,
+                claimFrom: postDescription.claimFrom,
+                teamInfo: postDescription.teamInfo,
+                challenge: postDescription.challenge,
+                value: postDescription.value,
+                amounts: postDescription.amounts,
+              })
+            }
+            style={{ resize: "none" }}
+            disabled={publication ? true : false}
+          ></textarea>
+        </div>
+        <div className="relative w-16 h-full border border-agua rounded-lg flex flex-col gap-3 p-1.5 items-center justify-center">
+          <div className="relative w-fit h-fit text-white font-dogB text-xxs">
+            Lens Collect Value
+          </div>
+          <div className="relative font-dog text-xxs text-white w-fit h-fit">
+            {`($ USDC)`}
+          </div>
+          <input
+            className="relative w-full h-10 flex items-center justify-center text-xs font-dogB text-sol rounded-lg bg-black p-1"
+            placeholder="0.01"
+            onChange={(e) =>
+              setPostDescription({
+                title: postDescription.title,
+                description: postDescription.description,
+                milestoneOne: postDescription.milestoneOne,
+                milestoneTwo: postDescription.milestoneTwo,
+                milestoneThree: postDescription.milestoneThree,
+                claimBy: postDescription.claimBy,
+                claimFrom: postDescription.claimFrom,
+                teamInfo: postDescription.teamInfo,
+                challenge: postDescription.challenge,
+                value: e.target.value,
+                amounts: postDescription.amounts,
+              })
+            }
+            value={postDescription.value}
+            style={{ resize: "none" }}
+            disabled={publication ? true : false}
+          />
+          <div className="relative font-dog text-center break-words text-xxs text-white w-fit h-fit">
+            {(
+              postDescription.amounts?.reduce(
+                (accumulator, currentValue) =>
+                  accumulator + Number(currentValue),
+                0
+              ) / Number(postDescription.value)
+            ).toFixed(0)}{" "}
+            collects to reach target
+          </div>
+        </div>
       </div>
       <div className="relative w-full h-[15.5rem] flex flex-row items-center justify-center p-2 gap-4">
         <div className="relative w-full h-full flex flex-col border border-white rounded-lg p-1.5 gap-2">
@@ -163,7 +205,6 @@ const Grant: FunctionComponent<GrantProps> = ({
           disabled={publication ? true : false}
         ></textarea>
       </div>
-      <div className="relative w-full h-12 border border-white rounded-lg"></div>
     </div>
   );
 };

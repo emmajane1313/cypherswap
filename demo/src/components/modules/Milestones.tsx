@@ -513,13 +513,30 @@ const Milestone: FunctionComponent<MilestoneProps> = ({
               //     index < filledBars ? "barFilled" : ""
               //   }`}
               key={index}
-              className={`relative w-full h-8 rounded-lg noFillbar ${
+              className={`relative w-full h-8 flex items-center justify-center text-center text-xs font-dog rounded-lg noFillbar ${
                 collected ? "filledBar" : ""
-              }`}
+              } ${collected ? "text-black" : "text-white/80"}`}
               style={{
                 backgroundColor: `rgb(109, 212, 0, ${collected ? opacity : 0})`,
               }}
-            ></div>
+            >
+              {index === 19
+                ? "0 USDC"
+                : index === 9
+                ? postDescription.amounts?.reduce(
+                    (accumulator, currentValue) =>
+                      accumulator + Number(currentValue),
+                    0
+                  ) /
+                    2 +
+                  " USDC"
+                : index === 0 &&
+                  postDescription.amounts?.reduce(
+                    (accumulator, currentValue) =>
+                      accumulator + Number(currentValue),
+                    0
+                  ) + " USDC"}
+            </div>
           );
         })}
       </div>
