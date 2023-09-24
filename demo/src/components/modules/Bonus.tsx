@@ -8,9 +8,7 @@ const Bonus: FunctionComponent<BonusProps> = ({
   claimBonus,
 }): JSX.Element => {
   useEffect(() => {
-    console.log("hiii");
     setTimeout(() => {
-      console.log("here");
       if (collected && filledBars < 18) {
         const timer = setTimeout(() => {
           setFilledBars(((prev: number) => {
@@ -22,9 +20,12 @@ const Bonus: FunctionComponent<BonusProps> = ({
     }, 4000);
   }, [collected, filledBars]);
 
-  console.log({ collected, filledBars });
   return (
-    <div className="relative w-fit h-full flex flex-col items-center justify-center">
+    <div
+      className={`relative w-fit h-full flex flex-col items-center justify-center gap-3 ${
+        !collected && "opacity-50"
+      }`}
+    >
       <div className="relative w-full h-full flex flex-col items-center justify-center gap-px">
         {Array.from({ length: 18 }).map((_, index: number) => {
           const opacity = (index + 2) * 0.05;
@@ -55,8 +56,14 @@ const Bonus: FunctionComponent<BonusProps> = ({
           );
         })}
       </div>
-      <div className="relative w-full h-20 font-on text-white text-center text-5xl leading-10 flex items-center justify-center break-words">
-        BONUS AVAILABLE
+      <div
+        className={`relative w-full h-16 font-on text-white text-center leading-7 flex text-4xl items-center justify-center break-words ${
+          collected &&
+          "border border-white rounded-lg cursor-pointer active:scale-95"
+        }`}
+        onClick={() => collected && claimBonus()}
+      >
+        {!collected ? "BONUS AVAILABLE" : "CLAIM & SWAP BONUS"}
       </div>
     </div>
   );
