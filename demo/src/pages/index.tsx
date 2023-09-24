@@ -23,6 +23,10 @@ export default function Home() {
     collected,
     filledBars,
     setFilledBars,
+    reacted,
+    currentMilestone,
+    handleMirrorLike,
+    claimLoading,
   } = useLens();
   console.log({ publication });
   const { openConnectModal } = useConnectModal();
@@ -40,10 +44,13 @@ export default function Home() {
           setCoverImageValue={setCoverImageValue}
           coverImageValue={coverImageValue}
           publication={publication}
+          reacted={reacted}
+          collected={collected}
         />
         <div className="relative flex flex-col gap-3 items-center justify-center w-full h-full">
           <div className="relative w-fit h-full flex flex-row gap-10">
             <Milestone
+              reacted={reacted}
               handlePost={handlePost}
               postLoading={postLoading}
               claimMilestone={claimMilestone}
@@ -53,7 +60,10 @@ export default function Home() {
               handleCollect={handleCollect}
               collected={collected}
               filledBars={filledBars}
+              currentMilestone={currentMilestone}
               setFilledBars={setFilledBars}
+              claimLoading={claimLoading}
+              handleMirrorLike={handleMirrorLike}
             />
             <Bonus
               claimBonus={claimBonus}

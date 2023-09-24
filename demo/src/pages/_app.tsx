@@ -4,6 +4,7 @@ import { polygonMumbai } from "wagmi/chains";
 import { WagmiConfig, createConfig, configureChains } from "wagmi";
 import { alchemyProvider } from "wagmi/providers/alchemy";
 import { getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
+import "@rainbow-me/rainbowkit/styles.css";
 const { publicClient, webSocketPublicClient, chains } = configureChains(
   [polygonMumbai],
   [

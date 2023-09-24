@@ -4,7 +4,7 @@ import claimReceiptNFTABI from "./../demo/abi/ClaimReceiptNFT.json";
 import claimDatacoreABI from "./../demo/abi/Datacore.json";
 
 const LENS_HUB_ADDRESS = "0x60Ae865ee4C725cd04353b5AAb364553f56ceF82";
-const USD_TOKEN = "0x2058A9D7613eEE744279e3856Ef0eAda5FCbaA7e";
+const USD_TOKEN = "0x9c3C9283D3e44854697Cd22D3Faa240Cfb032889";
 
 async function main() {
   // const CypherSwapClaimReceipt = await ethers.getContractFactory(
